@@ -26,7 +26,6 @@
   --radius:    10px;
   --radius-lg: 16px;
 
-  /* fluid spacing */
   --gap-xs: clamp(6px,  1vw, 10px);
   --gap-sm: clamp(12px, 2vw, 20px);
   --gap-md: clamp(24px, 4vw, 48px);
@@ -36,7 +35,6 @@
 
 /* ─── RESET ───────────────────────────────────────────────── */
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-
 html { scroll-behavior: smooth; }
 
 body {
@@ -56,14 +54,12 @@ h1 {
   letter-spacing: -1px;
   line-height: 1.15;
 }
-
 h2 {
   font-size: clamp(1.4rem, 3vw, 2rem);
   font-weight: 600;
   letter-spacing: -0.3px;
   margin-bottom: var(--gap-md);
 }
-
 h3 {
   font-size: 0.95rem;
   font-weight: 600;
@@ -71,7 +67,6 @@ h3 {
   text-transform: uppercase;
   margin-bottom: var(--gap-xs);
 }
-
 p { color: var(--text-muted); }
 
 /* ─── LAYOUT ─────────────────────────────────────────────── */
@@ -81,7 +76,6 @@ p { color: var(--text-muted); }
   margin: 0 auto;
   padding-inline: clamp(16px, 5vw, 60px);
 }
-
 section:not(.hero) {
   padding-block: var(--gap-xl);
   border-bottom: 1px solid var(--border);
@@ -97,22 +91,132 @@ header {
   -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--border);
 }
-
 .nav {
   display: flex;
   align-items: center;
   gap: var(--gap-sm);
   padding-block: clamp(12px, 2vw, 18px);
 }
-
 .nav img { height: 28px; flex-shrink: 0; }
-
 .nav-brand {
   font-size: 13px;
   font-weight: 600;
   letter-spacing: 2.5px;
   color: var(--text);
+  flex: 1;
 }
+
+/* ─── LANGUAGE TOGGLE ────────────────────────────────────── */
+.lang-toggle {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border-hi);
+  border-radius: 100px;
+  padding: 3px 4px;
+  flex-shrink: 0;
+}
+.lang-btn {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  padding: 5px 11px;
+  border-radius: 100px;
+  border: none;
+  cursor: pointer;
+  background: transparent;
+  color: var(--text-muted);
+  transition: background 0.2s ease, color 0.2s ease;
+  line-height: 1;
+}
+.lang-btn.active { background: var(--accent); color: #fff; }
+.lang-btn:not(.active):hover { color: var(--text); background: rgba(255,255,255,0.08); }
+
+/* ─── GEO BANNER ─────────────────────────────────────────── */
+.geo-banner {
+  display: none;
+  align-items: center;
+  gap: var(--gap-sm);
+  flex-wrap: wrap;
+  background: rgba(58,123,213,0.1);
+  border-bottom: 1px solid rgba(58,123,213,0.25);
+  padding: 10px clamp(16px, 5vw, 60px);
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+.geo-banner.show { display: flex; }
+.geo-banner strong { color: var(--text); }
+.geo-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-left: auto; }
+.geo-yes, .geo-no {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 5px 14px;
+  border-radius: 100px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+.geo-yes { background: var(--accent); color: #fff; border-color: var(--accent); }
+.geo-yes:hover { background: var(--accent-hi); border-color: var(--accent-hi); }
+.geo-no { background: transparent; color: var(--text-muted); border-color: var(--border-hi); }
+.geo-no:hover { background: rgba(255,255,255,0.06); color: var(--text); }
+
+/* ─── PERMISSION MODAL ───────────────────────────────────── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(7,17,28,0.8);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-overlay.show { display: flex; }
+.modal {
+  background: #112338;
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius-lg);
+  padding: clamp(28px, 5vw, 48px);
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  animation: modalIn 0.28s ease;
+}
+@keyframes modalIn {
+  from { opacity:0; transform: scale(0.94) translateY(12px); }
+  to   { opacity:1; transform: scale(1) translateY(0); }
+}
+.modal-icon { font-size: 2.2rem; margin-bottom: 14px; display: block; }
+.modal h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+  margin-bottom: 10px;
+  color: var(--text);
+}
+.modal p { font-size: 0.875rem; line-height: 1.65; margin-bottom: var(--gap-md); }
+.modal-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.modal-allow, .modal-deny {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 10px 22px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.18s ease;
+}
+.modal-allow { background: var(--accent); color: #fff; border-color: var(--accent); }
+.modal-allow:hover { background: var(--accent-hi); transform: translateY(-1px); }
+.modal-deny { background: rgba(255,255,255,0.05); color: var(--text-muted); border-color: var(--border-hi); }
+.modal-deny:hover { background: rgba(255,255,255,0.1); color: var(--text); }
 
 /* ─── HERO ───────────────────────────────────────────────── */
 .hero {
@@ -122,8 +226,6 @@ header {
   align-items: center;
   overflow: hidden;
 }
-
-/* Unsplash photo: developer + anchor/nautical theme */
 .hero-bg {
   position: absolute;
   inset: 0;
@@ -133,10 +235,7 @@ header {
   transform: scale(1.03);
   transition: transform 8s ease-out;
 }
-
 .hero-bg.loaded { transform: scale(1); }
-
-/* layered gradient overlay */
 .hero-overlay {
   position: absolute;
   inset: 0;
@@ -147,13 +246,8 @@ header {
       rgba(11,26,43,0.45) 75%,
       rgba(11,26,43,0.20) 100%
     ),
-    linear-gradient(to top,
-      rgba(11,26,43,0.7) 0%,
-      transparent 40%
-    );
+    linear-gradient(to top, rgba(11,26,43,0.7) 0%, transparent 40%);
 }
-
-/* subtle animated grid */
 .hero-grid {
   position: absolute;
   inset: 0;
@@ -163,7 +257,6 @@ header {
   background-size: 48px 48px;
   mask-image: linear-gradient(to right, transparent, black 30%, black 70%, transparent);
 }
-
 .hero-content {
   position: relative;
   width: 100%;
@@ -173,7 +266,6 @@ header {
   gap: var(--gap-sm);
   padding-block: var(--gap-xl);
 }
-
 .hero-eyebrow {
   display: inline-flex;
   align-items: center;
@@ -186,7 +278,6 @@ header {
   opacity: 0;
   animation: slideUp 0.7s 0.1s ease forwards;
 }
-
 .hero-eyebrow::before {
   content: '';
   display: block;
@@ -194,19 +285,13 @@ header {
   height: 1px;
   background: var(--accent-hi);
 }
-
-h1 {
-  opacity: 0;
-  animation: slideUp 0.7s 0.25s ease forwards;
-}
-
+h1 { opacity: 0; animation: slideUp 0.7s 0.25s ease forwards; }
 .hero-sub {
   max-width: 46ch;
   font-size: clamp(0.95rem, 1.8vw, 1.05rem);
   opacity: 0;
   animation: slideUp 0.7s 0.4s ease forwards;
 }
-
 .buttons {
   display: flex;
   flex-wrap: wrap;
@@ -230,33 +315,12 @@ h1 {
   text-decoration: none;
   cursor: pointer;
   border: 1px solid transparent;
-  transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease, background 0.18s ease;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
 }
-
-.btn.primary {
-  background: var(--accent);
-  color: #fff;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 0 rgba(58,123,213,0);
-}
-
-.btn.primary:hover {
-  background: var(--accent-hi);
-  border-color: var(--accent-hi);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(58,123,213,0.35);
-}
-
-.btn.secondary {
-  background: rgba(255,255,255,0.06);
-  color: var(--text);
-  border-color: var(--border-hi);
-}
-
-.btn.secondary:hover {
-  background: rgba(255,255,255,0.1);
-  transform: translateY(-2px);
-}
+.btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+.btn.primary:hover { background: var(--accent-hi); border-color: var(--accent-hi); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(58,123,213,0.35); }
+.btn.secondary { background: rgba(255,255,255,0.06); color: var(--text); border-color: var(--border-hi); }
+.btn.secondary:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
 
 /* ─── LOGO SHOWCASE ─────────────────────────────────────── */
 .logo-showcase {
@@ -266,18 +330,13 @@ h1 {
   padding-block: var(--gap-lg);
   border-bottom: 1px solid var(--border);
 }
-
 .logo-showcase img {
   max-width: clamp(120px, 18vw, 180px);
   opacity: 0.85;
   transition: transform 0.35s ease, opacity 0.35s ease;
   filter: drop-shadow(0 0 18px rgba(58,123,213,0.25));
 }
-
-.logo-showcase img:hover {
-  transform: scale(1.06);
-  opacity: 1;
-}
+.logo-showcase img:hover { transform: scale(1.06); opacity: 1; }
 
 /* ─── CARDS ──────────────────────────────────────────────── */
 .grid-4 {
@@ -285,7 +344,6 @@ h1 {
   gap: var(--gap-sm);
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
 }
-
 .card {
   padding: clamp(20px, 3vw, 36px);
   background: var(--bg-card);
@@ -293,64 +351,22 @@ h1 {
   border-radius: var(--radius);
   transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
 }
+.card:hover { transform: translateY(-5px); border-color: var(--border-hi); box-shadow: 0 12px 36px rgba(11,26,43,0.6); }
+.card-icon { font-size: 1.4rem; margin-bottom: var(--gap-sm); display: block; }
+.card p { font-size: 0.9rem; line-height: 1.6; margin-top: 4px; }
 
-.card:hover {
-  transform: translateY(-5px);
-  border-color: var(--border-hi);
-  box-shadow: 0 12px 36px rgba(11,26,43,0.6);
-}
-
-.card-icon {
-  font-size: 1.4rem;
-  margin-bottom: var(--gap-sm);
-  display: block;
-}
-
-.card p {
-  font-size: 0.9rem;
-  line-height: 1.6;
-  margin-top: 4px;
-}
-
-/* ─── CONTACT CTA ────────────────────────────────────────── */
-.cta-section {
-  text-align: center;
-}
-
-.cta-section .buttons {
-  justify-content: center;
-  opacity: 1;
-  animation: none;
-}
-
-.cta-section p {
-  max-width: 52ch;
-  margin: 0 auto var(--gap-md);
-  font-size: 1rem;
-}
+/* ─── CTA ────────────────────────────────────────────────── */
+.cta-section { text-align: center; }
+.cta-section .buttons { justify-content: center; opacity: 1; animation: none; }
+.cta-section p { max-width: 52ch; margin: 0 auto var(--gap-md); font-size: 1rem; }
 
 /* ─── FOOTER ─────────────────────────────────────────────── */
-footer {
-  padding-block: var(--gap-lg);
-  text-align: center;
-}
+footer { padding-block: var(--gap-lg); text-align: center; }
+footer p { font-size: 0.8rem; letter-spacing: 0.5px; }
 
-footer p {
-  font-size: 0.8rem;
-  letter-spacing: 0.5px;
-}
-
-/* ─── FADE-IN ON SCROLL ──────────────────────────────────── */
-.fade {
-  opacity: 0;
-  transform: translateY(16px);
-  transition: opacity 0.65s ease, transform 0.65s ease;
-}
-
-.fade.visible {
-  opacity: 1;
-  transform: none;
-}
+/* ─── FADE-IN ────────────────────────────────────────────── */
+.fade { opacity: 0; transform: translateY(16px); transition: opacity 0.65s ease, transform 0.65s ease; }
+.fade.visible { opacity: 1; transform: none; }
 
 /* ─── KEYFRAMES ─────────────────────────────────────────── */
 @keyframes slideUp {
@@ -366,20 +382,48 @@ footer p {
   .hero-sub { max-width: 100%; }
   .buttons { justify-content: center; }
   .grid-4 { grid-template-columns: 1fr 1fr; }
+  .geo-actions { margin-left: 0; }
 }
-
 @media (max-width: 380px) {
   .grid-4 { grid-template-columns: 1fr; }
+  .nav-brand { font-size: 11px; letter-spacing: 1.5px; }
 }
 </style>
 </head>
 <body>
 
+<!-- PERMISSION MODAL -->
+<div class="modal-overlay" id="geoModal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal">
+    <span class="modal-icon">📍</span>
+    <h3 id="modal-title">Detect your location?</h3>
+    <p  id="modal-body">We'd like to use your location to automatically show the page in your language. No data is stored or shared.</p>
+    <div class="modal-actions">
+      <button class="modal-allow" id="modalAllow">Allow</button>
+      <button class="modal-deny"  id="modalDeny">No thanks</button>
+    </div>
+  </div>
+</div>
+
 <!-- HEADER -->
 <header>
+  <!-- Geo suggestion banner — shown only when user is detected in Brazil -->
+  <div class="geo-banner" id="geoBanner" role="alert">
+    <span id="bannerMsg">🇧🇷 <strong>Parece que você está no Brasil.</strong> Quer ver esta página em Português?</span>
+    <div class="geo-actions">
+      <button class="geo-yes" id="bannerYes">Sim, mudar</button>
+      <button class="geo-no"  id="bannerNo">Stay in English</button>
+    </div>
+  </div>
+
   <div class="container nav">
     <img src="logo.svg" onerror="this.src='ftechlogo.webp'; this.onerror=null;" alt="Fornazari Tech logo" />
     <span class="nav-brand">FORNAZARI TECH</span>
+
+    <div class="lang-toggle" role="group" aria-label="Language selector">
+      <button class="lang-btn active" id="btnEN" onclick="setLang('en')">EN</button>
+      <button class="lang-btn"        id="btnPT" onclick="setLang('pt')">PT</button>
+    </div>
   </div>
 </header>
 
@@ -388,16 +432,13 @@ footer p {
   <div class="hero-bg" id="heroBg"></div>
   <div class="hero-overlay"></div>
   <div class="hero-grid"></div>
-
   <div class="container hero-content">
-    <span class="hero-eyebrow">Software Studio</span>
-    <h1>Software that<br><i>serves</i> people.</h1>
-    <p class="hero-sub">
-      We build reliable, long-lasting systems with clarity, structure, and responsibility.
-    </p>
+    <span class="hero-eyebrow" data-i18n="eyebrow">Software Studio</span>
+    <h1 data-i18n="h1">Software that<br><i>serves</i> people.</h1>
+    <p class="hero-sub" data-i18n="sub">We build reliable, long-lasting systems with clarity, structure, and responsibility.</p>
     <div class="buttons">
-      <a href="mailto:fornazari.tech@gmail.com" class="btn primary">Start a project</a>
-      <a href="https://github.com/fornazari-tech" class="btn secondary" target="_blank" rel="noopener">See our work</a>
+      <a href="mailto:fornazari.tech@gmail.com" class="btn primary" data-i18n="cta1">Start a project</a>
+      <a href="https://github.com/fornazari-tech" class="btn secondary" target="_blank" rel="noopener" data-i18n="cta2">See our work</a>
     </div>
   </div>
 </section>
@@ -409,37 +450,37 @@ footer p {
 
 <!-- HOW WE BUILD -->
 <section class="container fade">
-  <h2>How we build</h2>
+  <h2 data-i18n="how-title">How we build</h2>
   <div class="grid-4">
     <div class="card">
       <span class="card-icon">⬡</span>
-      <h3>Clarity</h3>
-      <p>Simple systems last. We strip away the unnecessary and keep what matters.</p>
+      <h3 data-i18n="card1-title">Clarity</h3>
+      <p  data-i18n="card1-body">Simple systems last. We strip away the unnecessary and keep what matters.</p>
     </div>
     <div class="card">
       <span class="card-icon">◈</span>
-      <h3>Structure</h3>
-      <p>Every decision has a reason. Architecture is never an afterthought.</p>
+      <h3 data-i18n="card2-title">Structure</h3>
+      <p  data-i18n="card2-body">Every decision has a reason. Architecture is never an afterthought.</p>
     </div>
     <div class="card">
       <span class="card-icon">◎</span>
-      <h3>Responsibility</h3>
-      <p>We build for the long term — and we stand behind what we ship.</p>
+      <h3 data-i18n="card3-title">Responsibility</h3>
+      <p  data-i18n="card3-body">We build for the long term — and we stand behind what we ship.</p>
     </div>
     <div class="card">
       <span class="card-icon">◇</span>
-      <h3>People</h3>
-      <p>Technology exists to serve people — not the other way around.</p>
+      <h3 data-i18n="card4-title">People</h3>
+      <p  data-i18n="card4-body">Technology exists to serve people — not the other way around.</p>
     </div>
   </div>
 </section>
 
 <!-- CTA -->
 <section class="container cta-section fade" id="contact">
-  <h2>Let's build something that lasts.</h2>
-  <p>Tell us about your project and we'll figure out what fits best.</p>
+  <h2 data-i18n="cta-title">Let's build something that lasts.</h2>
+  <p  data-i18n="cta-body">Tell us about your project and we'll figure out what fits best.</p>
   <div class="buttons">
-    <button class="btn primary" onclick="window.location.href='mailto:fornazari.tech@gmail.com'">Start a project</button>
+    <button class="btn primary" data-i18n="cta1" onclick="window.location.href='mailto:fornazari.tech@gmail.com'">Start a project</button>
   </div>
 </section>
 
@@ -449,20 +490,188 @@ footer p {
 </footer>
 
 <script>
-/* hero bg pan-in */
-const heroBg = document.getElementById('heroBg');
-const img = new Image();
-img.src = heroBg.style.backgroundImage
-  ? heroBg.style.backgroundImage.slice(5, -2)
-  : 'https://images.unsplash.com/photo-1542831371-29b0f74f9713?auto=format&fit=crop&w=1800&q=80';
-img.onload = () => heroBg.classList.add('loaded');
+/* ══════════════════════════════════════════════
+   TRANSLATIONS
+══════════════════════════════════════════════ */
+const i18n = {
+  en: {
+    'eyebrow':     'Software Studio',
+    'h1':          'Software that<br><i>serves</i> people.',
+    'sub':         'We build reliable, long-lasting systems with clarity, structure, and responsibility.',
+    'cta1':        'Start a project',
+    'cta2':        'See our work',
+    'how-title':   'How we build',
+    'card1-title': 'Clarity',
+    'card1-body':  'Simple systems last. We strip away the unnecessary and keep what matters.',
+    'card2-title': 'Structure',
+    'card2-body':  'Every decision has a reason. Architecture is never an afterthought.',
+    'card3-title': 'Responsibility',
+    'card3-body':  'We build for the long term — and we stand behind what we ship.',
+    'card4-title': 'People',
+    'card4-body':  'Technology exists to serve people — not the other way around.',
+    'cta-title':   "Let's build something that lasts.",
+    'cta-body':    "Tell us about your project and we'll figure out what fits best.",
+    'modal-title': 'Detect your location?',
+    'modal-body':  "We'd like to use your location to automatically show the page in your language. No data is stored or shared.",
+    'modal-allow': 'Allow',
+    'modal-deny':  'No thanks',
+  },
+  pt: {
+    'eyebrow':     'Estúdio de Software',
+    'h1':          'Software que<br><i>serve</i> pessoas.',
+    'sub':         'Construímos sistemas confiáveis e duradouros com clareza, estrutura e responsabilidade.',
+    'cta1':        'Iniciar um projeto',
+    'cta2':        'Ver nosso trabalho',
+    'how-title':   'Como construímos',
+    'card1-title': 'Clareza',
+    'card1-body':  'Sistemas simples duram mais. Removemos o supérfluo e ficamos com o que importa.',
+    'card2-title': 'Estrutura',
+    'card2-body':  'Cada decisão tem um motivo. A arquitetura nunca é uma reflexão tardia.',
+    'card3-title': 'Responsabilidade',
+    'card3-body':  'Construímos para o longo prazo — e assumimos o que entregamos.',
+    'card4-title': 'Pessoas',
+    'card4-body':  'A tecnologia existe para servir pessoas — e não o contrário.',
+    'cta-title':   'Vamos construir algo que dure.',
+    'cta-body':    'Conte-nos sobre seu projeto e encontraremos o que funciona melhor.',
+    'modal-title': 'Detectar sua localização?',
+    'modal-body':  'Gostaríamos de usar sua localização para exibir a página no seu idioma. Nenhum dado é armazenado ou compartilhado.',
+    'modal-allow': 'Permitir',
+    'modal-deny':  'Não, obrigado',
+  }
+};
 
-/* fade-in on scroll */
+/* ══════════════════════════════════════════════
+   LANGUAGE ENGINE
+══════════════════════════════════════════════ */
+let currentLang = localStorage.getItem('ft_lang') || 'en';
+
+function applyLang(lang) {
+  currentLang = lang;
+  localStorage.setItem('ft_lang', lang);
+  document.documentElement.lang = lang === 'pt' ? 'pt-BR' : 'en';
+
+  const t = i18n[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key] !== undefined) el.innerHTML = t[key];
+  });
+
+  // sync toggle buttons
+  document.getElementById('btnEN').classList.toggle('active', lang === 'en');
+  document.getElementById('btnPT').classList.toggle('active', lang === 'pt');
+
+  // sync modal strings (modal may not be open yet)
+  document.getElementById('modal-title').textContent = t['modal-title'];
+  document.getElementById('modal-body').textContent  = t['modal-body'];
+  document.getElementById('modalAllow').textContent  = t['modal-allow'];
+  document.getElementById('modalDeny').textContent   = t['modal-deny'];
+}
+
+function setLang(lang) {
+  applyLang(lang);
+  hideBanner();
+}
+
+/* ══════════════════════════════════════════════
+   GEO FLOW
+   1. Show our own permission modal (privacy-first)
+   2. If allowed → call Geolocation API
+   3. Reverse-geocode with Nominatim (free, no key)
+   4. If Brazil → show suggestion banner
+   Fallback: browser timezone heuristic
+══════════════════════════════════════════════ */
+const geoModal  = document.getElementById('geoModal');
+const banner    = document.getElementById('geoBanner');
+const modalAllow = document.getElementById('modalAllow');
+const modalDeny  = document.getElementById('modalDeny');
+const bannerYes  = document.getElementById('bannerYes');
+const bannerNo   = document.getElementById('bannerNo');
+
+function hideBanner() { banner.classList.remove('show'); }
+
+// Lightweight Brazil timezone heuristic (no network needed)
+function isBrazilTimezone() {
+  const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+  const brZones = [
+    'Sao_Paulo','Recife','Belem','Manaus','Cuiaba','Porto_Velho',
+    'Boa_Vista','Eirunepe','Rio_Branco','Araguaina','Bahia',
+    'Campo_Grande','Fortaleza','Maceio','Noronha'
+  ];
+  return tz.startsWith('America/') && brZones.some(z => tz.includes(z));
+}
+
+function showBrazilBanner() {
+  if (sessionStorage.getItem('ft_geo_asked')) return; // once per session
+  sessionStorage.setItem('ft_geo_asked', '1');
+  if (currentLang === 'pt') return; // already in PT
+  banner.classList.add('show');
+}
+
+function detectAndSuggest() {
+  if (!navigator.geolocation) {
+    if (isBrazilTimezone()) showBrazilBanner();
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    pos => {
+      const { latitude: lat, longitude: lon } = pos.coords;
+      fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`)
+        .then(r => r.json())
+        .then(data => {
+          if (data?.address?.country_code === 'br') showBrazilBanner();
+        })
+        .catch(() => { if (isBrazilTimezone()) showBrazilBanner(); });
+    },
+    () => { if (isBrazilTimezone()) showBrazilBanner(); }, // denied/error
+    { timeout: 7000 }
+  );
+}
+
+function requestGeoPermission() {
+  // Skip if user already answered
+  if (localStorage.getItem('ft_geo_done')) return;
+  geoModal.classList.add('show');
+}
+
+modalAllow.addEventListener('click', () => {
+  geoModal.classList.remove('show');
+  localStorage.setItem('ft_geo_done', '1');
+  detectAndSuggest();
+});
+
+modalDeny.addEventListener('click', () => {
+  geoModal.classList.remove('show');
+  localStorage.setItem('ft_geo_done', '1');
+  // Fallback: timezone-only, silent
+  if (isBrazilTimezone()) showBrazilBanner();
+});
+
+bannerYes.addEventListener('click', () => setLang('pt'));
+bannerNo.addEventListener('click',  () => hideBanner());
+
+/* ══════════════════════════════════════════════
+   HERO BG PAN-IN
+══════════════════════════════════════════════ */
+const heroBg = document.getElementById('heroBg');
+const bgImg  = new Image();
+bgImg.src = 'https://images.unsplash.com/photo-1542831371-29b0f74f9713?auto=format&fit=crop&w=1800&q=80';
+bgImg.onload = () => heroBg.classList.add('loaded');
+
+/* ══════════════════════════════════════════════
+   FADE-IN ON SCROLL
+══════════════════════════════════════════════ */
 const observer = new IntersectionObserver(
   entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
   { threshold: 0.12 }
 );
 document.querySelectorAll('.fade').forEach(el => observer.observe(el));
+
+/* ══════════════════════════════════════════════
+   INIT
+══════════════════════════════════════════════ */
+applyLang(currentLang);
+setTimeout(requestGeoPermission, 900); // slight delay so page renders first
 </script>
 
 </body>
