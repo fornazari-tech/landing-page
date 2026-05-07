@@ -7,7 +7,9 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<!-- font awesome import -->
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 
 <style>
 /* ─── TOKENS ──────────────────────────────────────────────── */
@@ -21,6 +23,7 @@
   --accent-hi: #5a9af0;
   --border:    rgba(58,107,165,0.25);
   --border-hi: rgba(90,154,240,0.5);
+  --whatsapp: #5be08c;
 
   --radius-sm: 6px;
   --radius:    10px;
@@ -481,6 +484,9 @@ footer p { font-size: 0.8rem; letter-spacing: 0.5px; }
   <p  data-i18n="cta-body">Tell us about your project and we'll figure out the best solution for you.</p>
   <div class="buttons">
     <button class="btn primary" data-i18n="cta1" onclick="window.location.href='mailto:fornazari.tech@gmail.com'">Start a project</button>
+    <button class="btn whatsapp" data-i18n="cta-whatsapp" onclick="window.open('https://wa.me/5542999835858?text=Hi%2C%20Fornazari%20Tech!%20Could%20you%20help%20me%3F%20I%20need%20a%20software%20for%20%3Cinsert-your-request-here%3E%20due%20to%20%3Cinsert-due-date%3E.', '_blank')">
+      <i class="fab fa-whatsapp"></i> Send us a message
+    </button>
   </div>
 </section>
 
