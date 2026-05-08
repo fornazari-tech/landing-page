@@ -7,7 +7,6 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<!-- font awesome import -->
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 
@@ -23,7 +22,7 @@
   --accent-hi: #5a9af0;
   --border:    rgba(58,107,165,0.25);
   --border-hi: rgba(90,154,240,0.5);
-  --whatsapp: #5be08c;
+  --whatsapp:  #25d366;
 
   --radius-sm: 6px;
   --radius:    10px;
@@ -324,6 +323,8 @@ h1 { opacity: 0; animation: slideUp 0.7s 0.25s ease forwards; }
 .btn.primary:hover { background: var(--accent-hi); border-color: var(--accent-hi); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(58,123,213,0.35); }
 .btn.secondary { background: rgba(255,255,255,0.06); color: var(--text); border-color: var(--border-hi); }
 .btn.secondary:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
+.btn.whatsapp { background: var(--whatsapp); color: #fff; border-color: var(--whatsapp); }
+.btn.whatsapp:hover { filter: brightness(1.1); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(37,211,102,0.3); }
 
 /* ─── LOGO SHOWCASE ─────────────────────────────────────── */
 .logo-showcase {
@@ -342,12 +343,16 @@ h1 { opacity: 0; animation: slideUp 0.7s 0.25s ease forwards; }
 .logo-showcase img:hover { transform: scale(1.06); opacity: 1; }
 
 /* ─── CARDS ──────────────────────────────────────────────── */
+
+/* Fix #6: flex row with wrap, min-width to prevent squashing */
 .grid-4 {
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
   gap: var(--gap-sm);
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
 }
 .card {
+  flex: 1 1 220px;          /* grow, shrink, min-width 220px */
+  min-width: min(100%, 220px);
   padding: clamp(20px, 3vw, 36px);
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -355,7 +360,12 @@ h1 { opacity: 0; animation: slideUp 0.7s 0.25s ease forwards; }
   transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
 }
 .card:hover { transform: translateY(-5px); border-color: var(--border-hi); box-shadow: 0 12px 36px rgba(11,26,43,0.6); }
-.card-icon { font-size: 1.4rem; margin-bottom: var(--gap-sm); display: block; }
+.card-icon {
+  font-size: 1.4rem;
+  margin-bottom: var(--gap-sm);
+  display: block;
+  color: var(--accent-hi);
+}
 .card p { font-size: 0.9rem; line-height: 1.6; margin-top: 4px; }
 
 /* ─── CTA ────────────────────────────────────────────────── */
@@ -365,6 +375,25 @@ h1 { opacity: 0; animation: slideUp 0.7s 0.25s ease forwards; }
 
 /* ─── FOOTER ─────────────────────────────────────────────── */
 footer { padding-block: var(--gap-lg); text-align: center; }
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: var(--gap-md);
+  margin-bottom: var(--gap-sm);
+}
+.footer-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+.footer-link:hover { color: var(--text); }
+.footer-link.whatsapp-link:hover { color: var(--whatsapp); }
+.footer-link.linkedin-link:hover { color: #0a66c2; }
 footer p { font-size: 0.8rem; letter-spacing: 0.5px; }
 
 /* ─── FADE-IN ────────────────────────────────────────────── */
@@ -384,12 +413,13 @@ footer p { font-size: 0.8rem; letter-spacing: 0.5px; }
   .hero-eyebrow { justify-content: center; }
   .hero-sub { max-width: 100%; }
   .buttons { justify-content: center; }
-  .grid-4 { grid-template-columns: 1fr 1fr; }
+  /* On very small screens, 2-col or 1-col is handled automatically by flex-wrap */
   .geo-actions { margin-left: 0; }
+  .footer-links { gap: var(--gap-sm); }
 }
 @media (max-width: 380px) {
-  .grid-4 { grid-template-columns: 1fr; }
   .nav-brand { font-size: 11px; letter-spacing: 1.5px; }
+  .footer-links { flex-direction: column; align-items: center; gap: 10px; }
 }
 </style>
 </head>
@@ -410,7 +440,6 @@ footer p { font-size: 0.8rem; letter-spacing: 0.5px; }
 
 <!-- HEADER -->
 <header>
-  <!-- Geo suggestion banner — shown only when user is detected in Brazil -->
   <div class="geo-banner" id="geoBanner" role="alert">
     <span id="bannerMsg">🇧🇷 <strong>Parece que você está no Brasil.</strong> Quer ver esta página em Português?</span>
     <div class="geo-actions">
@@ -440,7 +469,8 @@ footer p { font-size: 0.8rem; letter-spacing: 0.5px; }
     <h1 data-i18n="h1">Software that<br><i>serves</i> people.</h1>
     <p class="hero-sub" data-i18n="sub">We build reliable, long-lasting systems with clarity, structure, and responsibility.</p>
     <div class="buttons">
-      <a href="mailto:fornazari.tech@gmail.com" class="btn primary" data-i18n="cta1">Start a project</a>
+      <!-- Fix #4: email CTA with template text, handled via JS -->
+      <a id="emailCta" href="#" class="btn primary" data-i18n="cta1">Start a project</a>
       <a href="https://github.com/fornazari-tech" class="btn secondary" target="_blank" rel="noopener" data-i18n="cta2">See our work</a>
     </div>
   </div>
@@ -455,23 +485,24 @@ footer p { font-size: 0.8rem; letter-spacing: 0.5px; }
 <section class="container fade">
   <h2 data-i18n="how-title">How we build</h2>
   <div class="grid-4">
+    <!-- Fix #2: Font Awesome icons replacing emoji -->
     <div class="card">
-      <span class="card-icon">⬡</span>
+      <span class="card-icon"><i class="fas fa-eye"></i></span>
       <h3 data-i18n="card1-title">Clarity</h3>
       <p  data-i18n="card1-body">You will know what we're building and why. Your product will be clear and easy to understand.</p>
     </div>
     <div class="card">
-      <span class="card-icon">◈</span>
+      <span class="card-icon"><i class="fas fa-layer-group"></i></span>
       <h3 data-i18n="card2-title">Structure</h3>
       <p  data-i18n="card2-body">Every decision has a reason. Architecture is never an afterthought.</p>
     </div>
     <div class="card">
-      <span class="card-icon">◎</span>
+      <span class="card-icon"><i class="fas fa-shield-halved"></i></span>
       <h3 data-i18n="card3-title">Responsibility</h3>
       <p  data-i18n="card3-body">We build for the long term — and we stand behind what we ship.</p>
     </div>
     <div class="card">
-      <span class="card-icon">◇</span>
+      <span class="card-icon"><i class="fas fa-users"></i></span>
       <h3 data-i18n="card4-title">People</h3>
       <p  data-i18n="card4-body">Our software is built from people to people. Human dignity comes first always.</p>
     </div>
@@ -483,15 +514,26 @@ footer p { font-size: 0.8rem; letter-spacing: 0.5px; }
   <h2 data-i18n="cta-title">Let's build something that lasts.</h2>
   <p  data-i18n="cta-body">Tell us about your project and we'll figure out the best solution for you.</p>
   <div class="buttons">
-    <button class="btn primary" data-i18n="cta1" onclick="window.location.href='mailto:fornazari.tech@gmail.com'">Start a project</button>
-    <button class="btn whatsapp" data-i18n="cta-whatsapp" onclick="window.open('https://wa.me/5542999835858?text=Hi%2C%20Fornazari%20Tech!%20Could%20you%20help%20me%3F%20I%20need%20a%20software%20for%20%3Cinsert-your-request-here%3E%20due%20to%20%3Cinsert-due-date%3E.', '_blank')">
+    <!-- Fix #4: email CTA with template text, handled via JS -->
+    <button id="emailCta2" class="btn primary" data-i18n="cta1">Start a project</button>
+    <!-- Fix #1: WhatsApp button text and URL managed via JS -->
+    <button id="whatsappCta" class="btn whatsapp" data-i18n="cta-whatsapp">
       <i class="fab fa-whatsapp"></i> Send us a message
     </button>
   </div>
 </section>
 
 <!-- FOOTER -->
+<!-- Fix #3: LinkedIn and WhatsApp links in footer -->
 <footer>
+  <div class="footer-links">
+    <a href="https://www.linkedin.com/company/fornazari-tech" target="_blank" rel="noopener" class="footer-link linkedin-link">
+      <i class="fab fa-linkedin"></i> LinkedIn
+    </a>
+    <a id="footerWhatsapp" href="#" target="_blank" rel="noopener" class="footer-link whatsapp-link">
+      <i class="fab fa-whatsapp"></i> WhatsApp
+    </a>
+  </div>
   <p>© 2026 Fornazari Tech</p>
 </footer>
 
@@ -499,50 +541,64 @@ footer p { font-size: 0.8rem; letter-spacing: 0.5px; }
 /* ══════════════════════════════════════════════
    TRANSLATIONS
 ══════════════════════════════════════════════ */
+const PHONE = '5542999835858';
+
 const i18n = {
   en: {
-    'eyebrow':     'Software Studio',
-    'h1':          'Software that<br><i>serves</i> people.',
-    'sub':         'We build reliable, long-lasting systems with clarity, structure, and responsibility.',
-    'cta1':        'Start a project',
-    'cta2':        'See our work',
-    'how-title':   'How we build',
-    'card1-title': 'Clarity',
-    'card1-body':  'You will know what we\'re building and why. Your product will be clear and easy to understand.',
-    'card2-title': 'Structure',
-    'card2-body':  'Every decision has a reason. Architecture is never an afterthought.',
-    'card3-title': 'Responsibility',
-    'card3-body':  'We build for the long term — and we stand behind what we ship.',
-    'card4-title': 'People',
-    'card4-body':  'Our software is built from people to people. Human dignity comes first always.',
-    'cta-title':   "Let's build something that lasts.",
-    'cta-body':    "Tell us about your project and we'll figure out the best solution for you.",
-    'modal-title': 'Detect your location?',
-    'modal-body':  "We'd like to use your location to automatically show the page in your language. No data is stored or shared.",
-    'modal-allow': 'Allow',
-    'modal-deny':  'No thanks',
+    'eyebrow':        'Software Studio',
+    'h1':             'Software that<br><i>serves</i> people.',
+    'sub':            'We build reliable, long-lasting systems with clarity, structure, and responsibility.',
+    'cta1':           'Start a project',
+    'cta2':           'See our work',
+    'how-title':      'How we build',
+    'card1-title':    'Clarity',
+    'card1-body':     "You will know what we're building and why. Your product will be clear and easy to understand.",
+    'card2-title':    'Structure',
+    'card2-body':     'Every decision has a reason. Architecture is never an afterthought.',
+    'card3-title':    'Responsibility',
+    'card3-body':     'We build for the long term — and we stand behind what we ship.',
+    'card4-title':    'People',
+    'card4-body':     'Our software is built from people to people. Human dignity comes first always.',
+    'cta-title':      "Let's build something that lasts.",
+    'cta-body':       "Tell us about your project and we'll figure out the best solution for you.",
+    // Fix #1: WhatsApp button label in EN
+    'cta-whatsapp':   '<i class="fab fa-whatsapp"></i> Send us a message',
+    'modal-title':    'Detect your location?',
+    'modal-body':     "We'd like to use your location to automatically show the page in your language. No data is stored or shared.",
+    'modal-allow':    'Allow',
+    'modal-deny':     'No thanks',
+    // Fix #1 & #4: WhatsApp message and email subject/body in EN
+    'wa-msg':         'Hi, Fornazari Tech! I need a software for <describe your project>. My deadline is <insert date>.',
+    'email-subject':  'Project request — Fornazari Tech',
+    'email-body':     "Hi Fornazari Tech,\n\nI'd like to start a project with you.\n\nProject: <describe your project>\nDeadline: <insert date>\nBudget: <optional>\n\nBest regards,\n<your name>",
   },
   pt: {
-    'eyebrow':     'Estúdio de Software',
-    'h1':          'Software que<br><i>serve</i> pessoas.',
-    'sub':         'Construímos sistemas confiáveis e duradouros com clareza, estrutura e responsabilidade.',
-    'cta1':        'Iniciar um projeto',
-    'cta2':        'Ver nosso trabalho',
-    'how-title':   'Como construímos',
-    'card1-title': 'Clareza',
-    'card1-body':  'Você saberá o que estamos construindo e por quê. Seu produto será claro e fácil de entender.',
-    'card2-title': 'Estrutura',
-    'card2-body':  'Cada decisão tem um motivo. A arquitetura nunca é uma reflexão tardia.',
-    'card3-title': 'Responsabilidade',
-    'card3-body':  'Construímos para o longo prazo — e assumimos o que entregamos.',
-    'card4-title': 'Pessoas',
-    'card4-body':  'Nossa software é construído de pessoas para pessoas. A dignidade humana vem em primeiro lugar sempre.',
-    'cta-title':   'Vamos construir algo que dure.',
-    'cta-body':    'Conte-nos sobre seu projeto e vamos encontrar a melhor solução para você.',
-    'modal-title': 'Detectar sua localização?',
-    'modal-body':  'Gostaríamos de usar sua localização para exibir a página no seu idioma. Nenhum dado é armazenado ou compartilhado.',
-    'modal-allow': 'Permitir',
-    'modal-deny':  'Não, obrigado',
+    'eyebrow':        'Estúdio de Software',
+    'h1':             'Software que<br><i>serve</i> pessoas.',
+    'sub':            'Construímos sistemas confiáveis e duradouros com clareza, estrutura e responsabilidade.',
+    'cta1':           'Iniciar um projeto',
+    'cta2':           'Ver nosso trabalho',
+    'how-title':      'Como construímos',
+    'card1-title':    'Clareza',
+    'card1-body':     'Você saberá o que estamos construindo e por quê. Seu produto será claro e fácil de entender.',
+    'card2-title':    'Estrutura',
+    'card2-body':     'Cada decisão tem um motivo. A arquitetura nunca é uma reflexão tardia.',
+    'card3-title':    'Responsabilidade',
+    'card3-body':     'Construímos para o longo prazo — e assumimos o que entregamos.',
+    'card4-title':    'Pessoas',
+    'card4-body':     'Nosso software é construído de pessoas para pessoas. A dignidade humana vem em primeiro lugar sempre.',
+    'cta-title':      'Vamos construir algo que dure.',
+    'cta-body':       'Conte-nos sobre seu projeto e vamos encontrar a melhor solução para você.',
+    // Fix #1: WhatsApp button label in PT
+    'cta-whatsapp':   '<i class="fab fa-whatsapp"></i> Envie uma mensagem',
+    'modal-title':    'Detectar sua localização?',
+    'modal-body':     'Gostaríamos de usar sua localização para exibir a página no seu idioma. Nenhum dado é armazenado ou compartilhado.',
+    'modal-allow':    'Permitir',
+    'modal-deny':     'Não, obrigado',
+    // Fix #1 & #4: WhatsApp message and email subject/body in PT
+    'wa-msg':         'Olá, Fornazari Tech! Preciso de um software para <descreva seu projeto>. Meu prazo é <insira a data>.',
+    'email-subject':  'Solicitação de projeto — Fornazari Tech',
+    'email-body':     "Olá, Fornazari Tech,\n\nGostaria de iniciar um projeto com vocês.\n\nProjeto: <descreva seu projeto>\nPrazo: <insira a data>\nOrçamento: <opcional>\n\nAtenciosamente,\n<seu nome>",
   }
 };
 
@@ -551,26 +607,52 @@ const i18n = {
 ══════════════════════════════════════════════ */
 let currentLang = localStorage.getItem('ft_lang') || 'en';
 
+function buildWhatsAppUrl(lang) {
+  const msg = encodeURIComponent(i18n[lang]['wa-msg']);
+  return `https://wa.me/${PHONE}?text=${msg}`;
+}
+
+function buildMailtoUrl(lang) {
+  const t = i18n[lang];
+  const subject = encodeURIComponent(t['email-subject']);
+  const body    = encodeURIComponent(t['email-body']);
+  return `mailto:fornazari.tech@gmail.com?subject=${subject}&body=${body}`;
+}
+
 function applyLang(lang) {
   currentLang = lang;
   localStorage.setItem('ft_lang', lang);
   document.documentElement.lang = lang === 'pt' ? 'pt-BR' : 'en';
 
   const t = i18n[lang];
+
+  // Apply all data-i18n strings
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
     if (t[key] !== undefined) el.innerHTML = t[key];
   });
 
-  // sync toggle buttons
+  // Fix #1: update WhatsApp button href dynamically
+  const waUrl = buildWhatsAppUrl(lang);
+  document.getElementById('whatsappCta').onclick = () => window.open(waUrl, '_blank');
+
+  // Fix #3: update footer WhatsApp link
+  document.getElementById('footerWhatsapp').href = waUrl;
+
+  // Fix #4: update email CTA href with template text
+  const mailtoUrl = buildMailtoUrl(lang);
+  document.getElementById('emailCta').href   = mailtoUrl;
+  document.getElementById('emailCta2').onclick = () => { window.location.href = mailtoUrl; };
+
+  // Sync toggle buttons
   document.getElementById('btnEN').classList.toggle('active', lang === 'en');
   document.getElementById('btnPT').classList.toggle('active', lang === 'pt');
 
-  // sync modal strings (modal may not be open yet)
-  document.getElementById('modal-title').textContent = t['modal-title'];
-  document.getElementById('modal-body').textContent  = t['modal-body'];
-  document.getElementById('modalAllow').textContent  = t['modal-allow'];
-  document.getElementById('modalDeny').textContent   = t['modal-deny'];
+  // Sync modal strings
+  document.getElementById('modal-title').textContent  = t['modal-title'];
+  document.getElementById('modal-body').textContent   = t['modal-body'];
+  document.getElementById('modalAllow').textContent   = t['modal-allow'];
+  document.getElementById('modalDeny').textContent    = t['modal-deny'];
 }
 
 function setLang(lang) {
@@ -580,14 +662,11 @@ function setLang(lang) {
 
 /* ══════════════════════════════════════════════
    GEO FLOW
-   1. Show our own permission modal (privacy-first)
-   2. If allowed → call Geolocation API
-   3. Reverse-geocode with Nominatim (free, no key)
-   4. If Brazil → show suggestion banner
-   Fallback: browser timezone heuristic
+   Fix #5: auto-switch language when Brazil is confirmed,
+   instead of just showing the suggestion banner.
 ══════════════════════════════════════════════ */
-const geoModal  = document.getElementById('geoModal');
-const banner    = document.getElementById('geoBanner');
+const geoModal   = document.getElementById('geoModal');
+const banner     = document.getElementById('geoBanner');
 const modalAllow = document.getElementById('modalAllow');
 const modalDeny  = document.getElementById('modalDeny');
 const bannerYes  = document.getElementById('bannerYes');
@@ -595,7 +674,6 @@ const bannerNo   = document.getElementById('bannerNo');
 
 function hideBanner() { banner.classList.remove('show'); }
 
-// Lightweight Brazil timezone heuristic (no network needed)
 function isBrazilTimezone() {
   const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
   const brZones = [
@@ -607,15 +685,28 @@ function isBrazilTimezone() {
 }
 
 function showBrazilBanner() {
-  if (sessionStorage.getItem('ft_geo_asked')) return; // once per session
+  if (sessionStorage.getItem('ft_geo_asked')) return;
   sessionStorage.setItem('ft_geo_asked', '1');
-  if (currentLang === 'pt') return; // already in PT
+  if (currentLang === 'pt') return;
   banner.classList.add('show');
+}
+
+// Fix #5: when geolocation confirms Brazil, auto-switch to PT immediately.
+// The banner is only shown as a fallback (timezone heuristic = less certain).
+function handleBrazilDetected(certain) {
+  if (currentLang === 'pt') return;
+  if (certain) {
+    // GPS-confirmed Brazil → switch language automatically, no banner needed
+    setLang('pt');
+  } else {
+    // Timezone heuristic → just suggest via banner
+    showBrazilBanner();
+  }
 }
 
 function detectAndSuggest() {
   if (!navigator.geolocation) {
-    if (isBrazilTimezone()) showBrazilBanner();
+    if (isBrazilTimezone()) handleBrazilDetected(false);
     return;
   }
 
@@ -625,17 +716,24 @@ function detectAndSuggest() {
       fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`)
         .then(r => r.json())
         .then(data => {
-          if (data?.address?.country_code === 'br') showBrazilBanner();
+          if (data?.address?.country_code === 'br') {
+            handleBrazilDetected(true); // GPS + reverse-geocode = certain
+          }
         })
-        .catch(() => { if (isBrazilTimezone()) showBrazilBanner(); });
+        .catch(() => {
+          // Network error: fall back to timezone heuristic
+          if (isBrazilTimezone()) handleBrazilDetected(false);
+        });
     },
-    () => { if (isBrazilTimezone()) showBrazilBanner(); }, // denied/error
+    () => {
+      // User denied or geolocation error: fall back to timezone heuristic
+      if (isBrazilTimezone()) handleBrazilDetected(false);
+    },
     { timeout: 7000 }
   );
 }
 
 function requestGeoPermission() {
-  // Skip if user already answered
   if (localStorage.getItem('ft_geo_done')) return;
   geoModal.classList.add('show');
 }
@@ -649,8 +747,7 @@ modalAllow.addEventListener('click', () => {
 modalDeny.addEventListener('click', () => {
   geoModal.classList.remove('show');
   localStorage.setItem('ft_geo_done', '1');
-  // Fallback: timezone-only, silent
-  if (isBrazilTimezone()) showBrazilBanner();
+  if (isBrazilTimezone()) handleBrazilDetected(false);
 });
 
 bannerYes.addEventListener('click', () => setLang('pt'));
@@ -677,7 +774,7 @@ document.querySelectorAll('.fade').forEach(el => observer.observe(el));
    INIT
 ══════════════════════════════════════════════ */
 applyLang(currentLang);
-setTimeout(requestGeoPermission, 900); // slight delay so page renders first
+setTimeout(requestGeoPermission, 900);
 </script>
 
 </body>
